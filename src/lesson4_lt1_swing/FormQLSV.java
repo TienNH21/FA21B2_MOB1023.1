@@ -11,11 +11,13 @@ public class FormQLSV extends javax.swing.JFrame {
         initComponents(); // Luôn luôn là dòng đầu tiên của constructor 
         
         this.dssv = new ArrayList<>();
+        this.rdoNam.setSelected(true);
     }
     
     private void hienThiTable() {
         DefaultTableModel dtm = (DefaultTableModel) this.tblSv.getModel();
 
+        // Xóa tất cả các dòng đang có trên JTable
         dtm.setRowCount(0);
         for (SinhVien sv : this.dssv) {
             Object[] rowData = new Object[] {
@@ -80,10 +82,25 @@ public class FormQLSV extends javax.swing.JFrame {
         rdoNu.setText("Nữ");
 
         btnThem.setText("Thêm");
+        btnThem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemActionPerformed(evt);
+            }
+        });
 
         btnSua.setText("Sửa");
+        btnSua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSuaActionPerformed(evt);
+            }
+        });
 
         btnXoa.setText("Xóa");
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
 
         btnClear.setText("Clear");
         btnClear.addActionListener(new java.awt.event.ActionListener() {
@@ -308,6 +325,70 @@ public class FormQLSV extends javax.swing.JFrame {
             this.rdoNu.setSelected(true);
         }
     }//GEN-LAST:event_tblSvMouseClicked
+
+    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
+        // Đọc dữ liệu từ form
+        // JTextField       -> getText()
+        // JComboBox        -> getSelectedItem()
+        // JRadioButton     -> isSelected()
+        
+        String hoTen = this.txtHoTen.getText();
+        String maSv  = this.txtMaSv.getText();
+        String diaChi = this.txtDiaChi.getText();
+        
+        String nganh = this.cbbNganh.getSelectedItem().toString();
+
+        // gioiTinh: 1 - Nam, 0 - Nữ
+        int gioiTinh;
+        if ( this.rdoNam.isSelected() == true ) {
+            gioiTinh = 1;
+        } else {
+            gioiTinh = 0;
+        }
+        
+        SinhVien sv = new SinhVien(maSv, nganh, hoTen, gioiTinh, diaChi);
+        this.dssv.add(sv);
+        this.hienThiTable();
+    }//GEN-LAST:event_btnThemActionPerformed
+
+    private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
+        int viTri = this.tblSv.getSelectedRow();
+        if (viTri == -1) {
+            System.out.println("Hãy chọn 1 dòng để sửa");
+            
+            // return để dừng toàn bộ phần xử lý phía dưới của hàm này.
+            return;
+        }
+        
+        String hoTen = this.txtHoTen.getText();
+        String maSv  = this.txtMaSv.getText();
+        String diaChi = this.txtDiaChi.getText();
+        String nganh = this.cbbNganh.getSelectedItem().toString();
+        int gioiTinh;
+        if ( this.rdoNam.isSelected() == true ) {
+            gioiTinh = 1;
+        } else {
+            gioiTinh = 0;
+        }
+        
+        SinhVien sv = new SinhVien(maSv, nganh, hoTen, gioiTinh, diaChi);
+
+        // Cập nhật giá trị mới sv vào viTri trong ArrayList
+        this.dssv.set(viTri, sv);
+        this.hienThiTable();
+    }//GEN-LAST:event_btnSuaActionPerformed
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        int viTri = this.tblSv.getSelectedRow();
+        
+        if (viTri == -1) {
+            System.out.println("Hãy chọn 1 dòng để xóa");
+            return;
+        }
+        
+        this.dssv.remove(viTri);
+        this.hienThiTable();
+    }//GEN-LAST:event_btnXoaActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
