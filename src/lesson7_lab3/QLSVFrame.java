@@ -1,6 +1,7 @@
 package lesson7_lab3;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class QLSVFrame extends javax.swing.JFrame {
@@ -90,12 +91,32 @@ public class QLSVFrame extends javax.swing.JFrame {
         ckbThuong.setText("Có phần thưởng");
 
         btnThem.setText("Thêm");
+        btnThem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemActionPerformed(evt);
+            }
+        });
 
         btnCapNhat.setText("Cập nhật");
+        btnCapNhat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCapNhatActionPerformed(evt);
+            }
+        });
 
         btnXoa.setText("Xóa");
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
 
         btnClear.setText("Clear");
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -277,6 +298,83 @@ public class QLSVFrame extends javax.swing.JFrame {
         
         this.ckbThuong.setSelected( sv.getThuong() );
     }//GEN-LAST:event_tblSVMouseClicked
+
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+        this.txtHoTen.setText("");
+        this.txtDiem.setText("");
+        this.txtHocLuc.setText("");
+        this.cbbNganh.setSelectedIndex(0);
+        this.ckbThuong.setSelected(false);
+    }//GEN-LAST:event_btnClearActionPerformed
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        int viTri = this.tblSV.getSelectedRow();
+        
+        if (viTri == -1) {
+            JOptionPane.showMessageDialog(this, "Hãy chọn 1 dòng trên bảng để xóa");
+            return ;
+        }
+        
+        this.dssv.remove(viTri);
+        this.hienThiTable();
+    }//GEN-LAST:event_btnXoaActionPerformed
+
+    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
+        // Đọc dữ liệu
+        String hoTen = this.txtHoTen.getText();
+        String diemStr = this.txtDiem.getText();
+        String nganh = this.cbbNganh.getSelectedItem().toString();
+        
+        // Kiểm tra dữ liệu
+        if (
+            hoTen.length() == 0 ||
+            diemStr.length() == 0
+        ) {
+            JOptionPane.showMessageDialog(this, "Không được để trống");
+            return ;
+        }
+
+        int diem = 0;
+        try {
+            diem = Integer.parseInt(diemStr);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Điểm phải là số");
+            return ;
+        }
+        
+        SinhVien sv = new SinhVien(hoTen, nganh, diem);
+        this.dssv.add(sv);
+        this.hienThiTable();
+    }//GEN-LAST:event_btnThemActionPerformed
+
+    private void btnCapNhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapNhatActionPerformed
+        int viTri = this.tblSV.getSelectedRow();
+        
+        if (viTri == -1) {
+            JOptionPane.showMessageDialog(this, "Hãy chọn 1 dòng trên bảng để sửa");
+            return ;
+        }
+        
+        // Đọc dữ liệu
+        String hoTen = this.txtHoTen.getText();
+        String diemStr = this.txtDiem.getText();
+        String nganh = this.cbbNganh.getSelectedItem().toString();
+        
+        // Kiểm tra dữ liệu
+        if (
+            hoTen.length() == 0 ||
+            diemStr.length() == 0
+        ) {
+            JOptionPane.showMessageDialog(this, "Không được để trống");
+            return ;
+        }
+
+        int diem = Integer.parseInt(diemStr);
+        SinhVien sv = new SinhVien(hoTen, nganh, diem);
+        this.dssv.set(viTri, sv);
+        this.hienThiTable();
+    }//GEN-LAST:event_btnCapNhatActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
