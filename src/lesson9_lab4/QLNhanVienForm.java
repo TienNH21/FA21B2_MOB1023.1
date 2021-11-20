@@ -1,6 +1,10 @@
 package lesson9_lab4;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class QLNhanVienForm extends javax.swing.JFrame {
     private ArrayList<NhanVien> dsnv;
@@ -11,6 +15,29 @@ public class QLNhanVienForm extends javax.swing.JFrame {
         this.dsnv = new ArrayList<>();
         
         // Thêm 3 nv ảo vào ds & hiển thị lên Table
+        this.dsnv.add(new NhanVien("Ng Van A", new Date(), 1200));
+        this.dsnv.add(new NhanVien("Pham Van B", new Date(), 1100));
+        this.dsnv.add(new NhanVien("Tran Thi C", new Date(), 1400));
+        
+        this.hienThiTable();
+    }
+    
+    private void hienThiTable() {
+        DefaultTableModel dtm = (DefaultTableModel) this.tblNV.getModel();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-YYYY");
+        
+        dtm.setRowCount(0);
+        for (int i = 0; i < this.dsnv.size(); i++) {
+            NhanVien nv = this.dsnv.get(i);
+            
+            Object[] rowData = new Object[] {
+                nv.getHoTen(),
+                sdf.format(nv.getNgaySinh()),
+                nv.getLuong()
+            };
+            
+            dtm.addRow(rowData);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -45,12 +72,32 @@ public class QLNhanVienForm extends javax.swing.JFrame {
         jLabel4.setText("Lương");
 
         btnThem.setText("Thêm");
+        btnThem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemActionPerformed(evt);
+            }
+        });
 
         btnSua.setText("Sửa");
+        btnSua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSuaActionPerformed(evt);
+            }
+        });
 
         btnXoa.setText("Xóa");
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
 
         btnClear.setText("Clear");
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -122,6 +169,11 @@ public class QLNhanVienForm extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
+        tblNV.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblNVMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblNV);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -147,12 +199,10 @@ public class QLNhanVienForm extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addContainerGap()
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(109, 109, 109)
@@ -190,6 +240,128 @@ public class QLNhanVienForm extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void tblNVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblNVMouseClicked
+        int viTri = this.tblNV.getSelectedRow();
+        
+        if (viTri == -1) {
+            return ;
+        }
+        
+        NhanVien nv = this.dsnv.get(viTri);
+        this.txtHoTen.setText( nv.getHoTen() );
+        this.txtLuong.setText( nv.getLuong() + "" );
+        System.out.println( nv.getNgaySinh().toString() );
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-YYYY");
+        String ngaySinh = sdf.format( nv.getNgaySinh() );
+        this.txtNgaySinh.setText(ngaySinh);
+    }//GEN-LAST:event_tblNVMouseClicked
+
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+        this.txtHoTen.setText("");
+        this.txtLuong.setText("");
+        this.txtNgaySinh.setText("");
+    }//GEN-LAST:event_btnClearActionPerformed
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        int viTri = this.tblNV.getSelectedRow();
+        
+        if (viTri == -1) {
+            JOptionPane.showMessageDialog(this, "Hãy chọn 1 dòng để xóa");
+            return ;
+        }
+        
+        this.dsnv.remove(viTri);
+        this.hienThiTable();
+    }//GEN-LAST:event_btnXoaActionPerformed
+
+    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
+        // B1: Đọc dữ liệu từ Form
+        String hoTen = this.txtHoTen.getText();
+        String luongStr = this.txtLuong.getText();
+        String ngaySinhStr = this.txtNgaySinh.getText();
+        
+        // B2: Kiểm tra Form
+        // 2.1: Kiểm tra form trống
+        if (
+            hoTen.length() == 0 ||
+            luongStr.length() == 0 ||
+            ngaySinhStr.length() == 0
+        ) {
+            JOptionPane.showMessageDialog(this, "Không được để trống");
+            return ;
+        }
+
+        // 2.2 Kiểm tra Lương là số
+        double luong;
+        try {
+            luong = Double.parseDouble(luongStr);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lương phải là số");
+            return ;
+        }
+        
+        // 2.3 Kiểm tra định dạng ngày tháng
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-YYYY");
+        Date ngaySinh;
+        try {
+            ngaySinh = sdf.parse(ngaySinhStr);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Sai định dạng ngày tháng");
+            return ;
+        }
+        
+        NhanVien nv = new NhanVien(hoTen, ngaySinh, luong);
+        this.dsnv.add(nv);
+        this.hienThiTable();
+    }//GEN-LAST:event_btnThemActionPerformed
+
+    private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
+        int viTri = this.tblNV.getSelectedRow();
+        if (viTri == -1) {
+            JOptionPane.showMessageDialog(this, "Hãy chọn dòng cần sửa.");
+            return ;
+        }
+
+        String hoTen = this.txtHoTen.getText();
+        String luongStr = this.txtLuong.getText();
+        String ngaySinhStr = this.txtNgaySinh.getText();
+
+        if (
+            hoTen.length() == 0 ||
+            luongStr.length() == 0 ||
+            ngaySinhStr.length() == 0
+        ) {
+            JOptionPane.showMessageDialog(this, "Không được để trống");
+            return ;
+        }
+
+        double luong;
+        try {
+            luong = Double.parseDouble(luongStr);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lương phải là số");
+            return ;
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-YYYY");
+        Date ngaySinh;
+        try {
+            ngaySinh = sdf.parse(ngaySinhStr);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Sai định dạng ngày tháng");
+            return ;
+        }
+        
+        NhanVien nv = new NhanVien(hoTen, ngaySinh, luong);
+        this.dsnv.set(viTri, nv);
+        this.hienThiTable();
+    }//GEN-LAST:event_btnSuaActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

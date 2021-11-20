@@ -15,6 +15,7 @@ public class QLSVFrame extends javax.swing.JFrame {
         this.dssv.add(new SinhVien("Tran Van B", "TKTW", 7));
         this.dssv.add(new SinhVien("Ng Thi C", "LTMT", 8));
         this.hienThiTable();
+        this.ckbThuong.setEnabled(false);
     }
 
     public void hienThiTable() {
