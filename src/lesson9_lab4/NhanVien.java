@@ -1,8 +1,9 @@
 package lesson9_lab4;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class NhanVien {
+public class NhanVien implements Serializable {
     private String hoTen;
     private Date ngaySinh;
     private double luong;
