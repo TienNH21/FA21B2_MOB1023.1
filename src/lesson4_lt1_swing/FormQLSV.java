@@ -1,11 +1,20 @@
 package lesson4_lt1_swing;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import lesson1.SinhVien;
 
 public class FormQLSV extends javax.swing.JFrame {
     private ArrayList<SinhVien> dssv;
+    private String filename = "qlsv.txt";
 
     public FormQLSV() {
         initComponents(); // Luôn luôn là dòng đầu tiên của constructor 
@@ -119,8 +128,18 @@ public class FormQLSV extends javax.swing.JFrame {
         });
 
         btnDocFile.setText("Đọc file");
+        btnDocFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDocFileActionPerformed(evt);
+            }
+        });
 
         btnGhiFile.setText("Ghi file");
+        btnGhiFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGhiFileActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -317,11 +336,17 @@ public class FormQLSV extends javax.swing.JFrame {
             return;
         }
         
-        String maSv = this.tblSv.getValueAt(row, 0).toString();
-        String hoTen = this.tblSv.getValueAt(row, 1).toString();
-        String diaChi = this.tblSv.getValueAt(row, 2).toString();
-        String nganh = this.tblSv.getValueAt(row, 3).toString();
-        String gtString = this.tblSv.getValueAt(row, 4).toString();
+//        String maSv = this.tblSv.getValueAt(row, 0).toString();
+//        String hoTen = this.tblSv.getValueAt(row, 1).toString();
+//        String diaChi = this.tblSv.getValueAt(row, 2).toString();
+//        String nganh = this.tblSv.getValueAt(row, 3).toString();
+//        String gtString = this.tblSv.getValueAt(row, 4).toString();
+
+        String maSv = this.dssv.get(row).getMaSv();
+        String hoTen = this.dssv.get(row).getHoTen();
+        String diaChi = this.dssv.get(row).getDiaChi();
+        String nganh = this.dssv.get(row).getNganh();
+        String gtString = this.dssv.get(row).getGioiTinh() == 1 ? "Nam" : "Nữ";
         
         this.txtMaSv.setText(maSv);
         this.txtHoTen.setText(hoTen);
@@ -399,6 +424,36 @@ public class FormQLSV extends javax.swing.JFrame {
         this.dssv.remove(viTri);
         this.hienThiTable();
     }//GEN-LAST:event_btnXoaActionPerformed
+
+    private void btnGhiFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGhiFileActionPerformed
+        try {
+            FileOutputStream fos = new FileOutputStream(filename);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+
+            oos.writeObject(this.dssv);
+
+            oos.close();
+            JOptionPane.showMessageDialog(this, "Ghi file thành công");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Ghi file thất bại");
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnGhiFileActionPerformed
+
+    private void btnDocFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDocFileActionPerformed
+        try {
+            FileInputStream fis = new FileInputStream(filename);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            
+            this.dssv = (ArrayList<SinhVien>) ois.readObject();
+            this.hienThiTable();
+            
+            ois.close();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Đọc file thất bại");
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnDocFileActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

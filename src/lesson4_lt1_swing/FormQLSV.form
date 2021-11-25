@@ -289,11 +289,17 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="&#x110;&#x1ecd;c file"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDocFileActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnGhiFile">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Ghi file"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGhiFileActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
