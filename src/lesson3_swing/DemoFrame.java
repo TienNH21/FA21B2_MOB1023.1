@@ -68,6 +68,29 @@ public class DemoFrame extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(51, 255, 0));
 
+        txtEmail.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtEmailFocusLost(evt);
+            }
+        });
+        txtEmail.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                txtEmailInputMethodTextChanged(evt);
+            }
+        });
+        txtEmail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtEmailActionPerformed(evt);
+            }
+        });
+        txtEmail.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                txtEmailPropertyChange(evt);
+            }
+        });
+
         jLabel1.setText("Email");
 
         jLabel2.setText("Mật khẩu");
@@ -289,6 +312,22 @@ public class DemoFrame extends javax.swing.JFrame {
         
         JOptionPane.showMessageDialog(this, maSv + " - " + hoTen + " - " + nganh);
     }//GEN-LAST:event_tblSvMouseClicked
+
+    private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed
+//        System.out.println("-----");
+    }//GEN-LAST:event_txtEmailActionPerformed
+
+    private void txtEmailPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtEmailPropertyChange
+//        System.out.println("-----");
+    }//GEN-LAST:event_txtEmailPropertyChange
+
+    private void txtEmailInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txtEmailInputMethodTextChanged
+//        System.out.println("-----");
+    }//GEN-LAST:event_txtEmailInputMethodTextChanged
+
+    private void txtEmailFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtEmailFocusLost
+        System.out.println("-----");
+    }//GEN-LAST:event_txtEmailFocusLost
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

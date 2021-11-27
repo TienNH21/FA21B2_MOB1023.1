@@ -5,14 +5,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import lesson1.SinhVien;
 
-public class FormQLSV extends javax.swing.JFrame {
+public class FormQLSV extends javax.swing.JFrame
+implements Runnable {
     private ArrayList<SinhVien> dssv;
     private String filename = "qlsv.txt";
 
@@ -21,6 +24,26 @@ public class FormQLSV extends javax.swing.JFrame {
         
         this.dssv = new ArrayList<>();
         this.rdoNam.setSelected(true);
+
+        Thread t = new Thread(this);
+        t.start();
+    }
+    
+    @Override
+    public void run() {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        while (true) {
+            Date now = new Date();
+            String txt = sdf.format(now);
+            
+            this.lblClock.setText(txt);
+            
+            try {
+                Thread.sleep(1000);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
     
     private void hienThiTable() {
@@ -66,6 +89,7 @@ public class FormQLSV extends javax.swing.JFrame {
         btnTaoSvAo = new javax.swing.JButton();
         btnDocFile = new javax.swing.JButton();
         btnGhiFile = new javax.swing.JButton();
+        lblClock = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblSv = new javax.swing.JTable();
@@ -141,6 +165,8 @@ public class FormQLSV extends javax.swing.JFrame {
             }
         });
 
+        lblClock.setText("00:00:00");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -156,13 +182,15 @@ public class FormQLSV extends javax.swing.JFrame {
                         .addComponent(btnXoa)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnClear))
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
                             .addComponent(jLabel5)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addComponent(rdoNam)
                             .addGap(18, 18, 18)
-                            .addComponent(rdoNu))
+                            .addComponent(rdoNu)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
+                            .addComponent(lblClock))
                         .addGroup(jPanel2Layout.createSequentialGroup()
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel1)
@@ -209,7 +237,8 @@ public class FormQLSV extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(rdoNam)
-                    .addComponent(rdoNu))
+                    .addComponent(rdoNu)
+                    .addComponent(lblClock))
                 .addGap(24, 24, 24)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnThem)
@@ -506,6 +535,7 @@ public class FormQLSV extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblClock;
     private javax.swing.JRadioButton rdoNam;
     private javax.swing.JRadioButton rdoNu;
     private javax.swing.JTable tblSv;
